@@ -10,23 +10,71 @@ class App extends Component {
   constructor () {
     super()
     this.state = {
-
+      data: {
+        value: 1,
+        other: 1
+      },
+      dataLain : {
+        dataAnu: 11
+      },
+      style: {
+        header: '',
+        margin: ''
+      }
     }
+    this.hideBar = this.hideBar.bind(this)
+  }
+
+  onClickHandle (event) {
+    const state = this.state
+    const { data } = this.state
+
+    console.log(event.target.value)
+
+    // try to add new value 
+    data.value = Number(event.target.value) + 1
+    this.setState({...this.state, data})
   }
   
   displayHomePage () {
+    const data = this.state.data
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="App" style={{height: '1000px'}}>
+        <header className="App-header" style={{position: this.state.style.header}}>
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to reak hoek cuh</h1>
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <div style={{paddingTop: this.state.style.margin}}>
+          <p className="App-intro" style={{}}>
+              To get started, edit <code>src/App.js</code> and save to reload.
+          </p>
+          <button value={data.value} onClick={(event) => this.onClickHandle(event)}>Click me</button>
+          <p>{data.value}</p>
+          <p> other {data.other} </p>
+        </div>
       </div>
     )
   }
+
+  hideBar () {
+    const {style} = this.state
+
+    console.log(window.scrollY)
+    if (window.scrollY > 200) {
+      style.header = 'fixed'
+      style.margin = '450px'
+    } else {
+      style.header = ''
+      style.margin = ''
+    }
+
+    this.setState({...this.state, style})
+  }
+
+  componentDidMount () {
+    window.addEventListener('scroll', this.hideBar);
+  }
+  
 
   render () {
     return (
